@@ -1,0 +1,358 @@
+{
+    "openapi": "3.0.0",
+    "servers": [
+        {
+            "url": "https://api.ogd.systems",
+            "variables": {}
+        }
+    ],
+    "info": {
+        "description": "OpenGenericDevelopment Backend Api Docs",
+        "version": "1.0.0",
+        "title": "OGDBackend",
+        "contact": {}
+    },
+    "tags": [
+        {
+            "name": "forms"
+        },
+        {
+            "name": "user"
+        },
+        {
+            "name": "team"
+        }
+    ],
+    "paths": {
+        "/bewerben": {
+            "put": {
+                "tags": [
+                    "forms"
+                ],
+                "summary": "Adds an Application",
+                "description": "",
+                "parameters": [],
+                "operationId": "apply_add",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "OK"
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "birth",
+                                    "name",
+                                    "email",
+                                    "text",
+                                    "rank"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "birth": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "text": {
+                                        "type": "string"
+                                    },
+                                    "rank": {
+                                        "type": "string",
+                                        "enum": [
+                                            "developer",
+                                            "deppelopfer",
+                                            "supporter"
+                                        ]
+                                    }
+                                }
+                            },
+                            "example": {
+                                "name": "John Doe",
+                                "email": "John@Doe.com",
+                                "rank": "deppelopfer",
+                                "birth": 1999,
+                                "text": "My Application Letter"
+                            }
+                        }
+                    }
+                },
+                "security": []
+            },
+            "get": {
+                "tags": [
+                    "forms"
+                ],
+                "summary": "Get all Applications",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "only_get_active",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "false"
+                        }
+                    }
+                ],
+                "operationId": "get_all",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "applications": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "birth": {
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "type": "string"
+                                                    },
+                                                    "text": {
+                                                        "type": "string"
+                                                    },
+                                                    "rank": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "applications": [
+                                        {
+                                            "id": "0",
+                                            "name": "john",
+                                            "birth": "1999",
+                                            "email": "john@doe.com",
+                                            "text": "john doe´s Application",
+                                            "rank": "deppelopfer"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "No Permissions"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "api_key": []
+                    }
+                ]
+            }
+        },
+        "/user/login": {
+            "patch": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Login User and get Acess Token",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "operationId": "user_login",
+                "responses": {
+                    "200": {
+                        "description": "Logged in",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "format": "int64"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "permissions": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "key": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "OK",
+                                    "user": {
+                                        "id": 0,
+                                        "name": "John Doe",
+                                        "permissions": [
+                                            "application::get",
+                                            "show::ceo"
+                                        ],
+                                        "key": "aaaa-bbbb-cccc-dddd"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Login Failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "status": "Login failed"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/team": {
+            "get": {
+                "tags": [
+                    "team"
+                ],
+                "summary": "Get Shown team users grouped by their view scopes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "ceo": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "cto": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "cpo": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "ceo": [
+                                        "John Doe"
+                                    ],
+                                    "cto": [
+                                        "John Doe"
+                                    ],
+                                    "cpo": [
+                                        "John Doe"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": []
+            }
+        }
+    },
+    "components": {
+        "schemas": {},
+        "securitySchemes": {
+            "api_key": {
+                "type": "apiKey",
+                "name": "api_key",
+                "in": "header"
+            }
+        },
+        "links": {},
+        "callbacks": {}
+    },
+    "security": []
+}
