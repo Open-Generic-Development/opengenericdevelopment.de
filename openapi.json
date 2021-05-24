@@ -1,11 +1,5 @@
 {
     "openapi": "3.0.0",
-    "servers": [
-        {
-            "url": "https://api.ogd.systems",
-            "variables": {}
-        }
-    ],
     "info": {
         "description": "OpenGenericDevelopment Backend Api Docs",
         "version": "1.0.0",
